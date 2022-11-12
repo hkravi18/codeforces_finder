@@ -44,13 +44,43 @@ app.route("/")
 
 
 
-
-
-
 app.route("/info")
 .get(function (req,res) {
+    res.sendFile(__dirname + "/info.html");
+    console.log("Get request received");                
+})
+.post(function (req,res) {
+    const url = "https://codeforces.com/api/";
+    user_profile = req.body.user;
+    const user_url = url + "user.info?handles=" + req.body.user;
+    //console.log(user_url);
+    https.get (user_url, function (response) {
+        response.on("data" ,function (data) {
+            const user = JSON.parse(data);
+            console.log(user);
+            if (user.status === "FAILED")
+            {
+                //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
+                res.redirect("/failure");
+            }
+            else if (user.status === "OK")
+            {
+                console.log(user);
+                res.render("info",
+                {usersArr : user}
+                );
+                console.log(user.status);    
+            } 
+        })
+    });
+});
+
+
+
+/*app.route("/info")
+.get(function (req,res) {
     if (post_recieved===0)
-        res.sendFile(__dirname + "/user.html"); 
+        res.sendFile(__dirname + "/info.html"); 
     else if (post_recieved===1)
     {
         post_recieved=0;
@@ -96,8 +126,15 @@ app.route("/info")
             } 
         })
     });
-});
+});*/
 
+
+
+//FAILURE
+app.route("/failure")
+.get(function(req,res){
+    res.sendFile(__dirname + "/failure.html"); 
+})
 
 
 
@@ -117,7 +154,8 @@ app.route("/add")
             console.log(user);
             if (user.status === "FAILED")
             {
-                res.send("<h3>User with handle "+ user_profile +" not found</h3>");
+                //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
+                res.redirect("/failure");
             }
             else if (user.status === "OK")
             {
@@ -165,8 +203,11 @@ app.route("/remove")
                         }
                     )
                 } else {
-                    res.send("No user with the given user handle found.");
+                    //res.send("No user with the given user handle found.");
+                    res.redirect("/failure");
                 }
+            } else {
+                res.redirect("/error");
             }
         }
     ) 
@@ -188,7 +229,7 @@ app.route("/showList")
                 res.send("Not Found");
             }
         } else {
-            res.send("ERROR");
+            res.redirect("/error");
         }
     })
     
@@ -236,6 +277,36 @@ app.route("/graph")
     );
 });
 
+//REMOVE ALL 
+app.route("/removeAll")
+.get(function (req,res) {
+    User.deleteMany(
+       function (err) {
+        if (!err) {
+            console.log("Deleted all");
+            res.sendFile(__dirname + "/removedAll.html"); 
+        } else {
+            res.redirect("/error");
+        }
+       }   
+    );
+});
+
+
+//ADD ALL FRIENDS
+app.route("/addFriends")
+.get(function (req,res) {
+    
+});
+
+
+//ERROR
+app.route("/error")
+.get(function (req,res) {
+    res.sendFile(__dirname + "/error.html"); 
+});
+
+
 
 //FEATURES
 app.get("/features",
@@ -276,3 +347,7 @@ app.listen(port, function (req,res) {
 
 
 //https://codeforces.com/api/contest.hacks?contestId=566&apiKey=https://codeforces.com/api/contest.hacks?contestId=566&apiKey=xxx&time=1665605165&apiSig=123456<hash>, where <hash> is sha512Hex(123456/contest.hacks?apiKey=xxx&contestId=566&time=1665605165#yyy)&time=1665605165&apiSig=123456<hash>, where <hash> is sha512Hex(123456/contest.hacks?apiKey=xxx&contestId=566&time=1665605165#yyy)
+
+
+
+//https://sheltered-anchorage-85442.herokuapp.com/
