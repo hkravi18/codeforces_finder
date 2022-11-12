@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script type="text/javascript">
+    //const Array = <%- JSON.stringify(Array).replace(/\\/g,'').replace(/"/,'')  %>;
+    const Array = <%- JSON.stringify(Array) %>
+    console.log(<%=Array%>);
+    const dataArr = [];
+
+    for (var i=0;i<Users_Arr.length;i++) {
+      const obj = {
+          y : Array[i].rating,
+          label : Array[i].name  
+      };
+      dataArr.push(obj);
+    }
+
+    let v = <%= p%>;
+    window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Olympic Medals of all Times (till 2012 Olympics)"
+      },
+      data: [
+      {
+        type: "bar",
+        dataPoints: Array
+      }
+      ]
+    });
+
+    chart.render(); 
+    } 
+  </script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
+<body>
+  <div id="chartContainer" style="height: 300px; width: 100%;">
+  </div>
+</body>
+</html>

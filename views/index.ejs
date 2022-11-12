@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codeforces Finder</title>
+</head>
+<body>
+    <centre>
+        <%if (rank === "newbie") {%>
+            <h1 style="color:grey">user_profile : <%= user %></h1>
+        <%} else if (rank === "pupil") {%>
+            <h1 style="color:green">user_profile : <%= user %></h1>
+        <%} else if (rank === "specialist") {%>
+            <h1 style="color:cyan">user_profile : <%= user %></h1>
+        <%} else if (rank === "expert") {%>
+            <h1 style="color:blue">user_profile : <%= user %></h1>
+        <%} else if (rank === "candidate master") {%>
+            <h1 style="color:violet">user_profile : <%= user %></h1>
+        <%} else if (rank === "master") {%>
+            <h1 style="color:orange">user_profile : <%= user %></h1>
+        <%} else if (rank === "international master") {%>
+            <h1 style="color:#ff8c00">user_profile : <%= user %></h1>
+        <%} else if (rank === "grandmaster") {%>
+            <h1 style="color:#ad3f3b">user_profile : <%= user %></h1>
+        <%} else if (rank === "international grandmaster") {%>
+            <h1 style="color:red">user_profile : <%= user %></h1>
+        <%} else if (rank === "legendary grandmaster") {%>
+            <h1 style="color:#750501">user_profile : <%= user %></h1>
+        <%}%>     
+    <h3>rating : <%=rating%></h3>
+    <h3>friendOfCount : <%=friendOfCount%></h3>
+    <h3>contribution : <%=contribution%></h3>
+    <h3>maxRating : <%=maxRating%></h3>
+    <h3>maxRank : <%=maxRank%></h3>
+    <h3>rank : <%= rank%></h3>
+    </centre>    
+</body>
+</html>

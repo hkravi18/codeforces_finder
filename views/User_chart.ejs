@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script type="text/javascript">
+    
+    let Users_Arr = [<%- Array %>];
+    let dataArr = [];
+
+    console.log("/////////");
+    console.log(Array);
+
+
+    for (var i=0;i<Users_Arr.length;i++) {
+      const obj = {
+          y : Users_Arr[i].rating,
+          label : Users_Arr[i].name  
+      };
+      dataArr.push(obj);
+    }
+
+    for (var i=0;i<dataArr.length;i++) {
+      for (var j=i;j<dataArr.length;j++) {
+          if (data_Arr[i].y < data_Arr[j].y)
+          {
+              var temp = dataArr[i].y;
+              dataArr[i].y = dataArr[j].y;
+              dataArr[j].y = temp;
+
+              temp = dataArr[i].label;
+              dataArr[i].label = dataArr[j].label;
+              dataArr[j].label = temp;
+          }  
+      }
+    }
+    
+
+    window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Olympic Medals of all Times (till 2012 Olympics)"
+      },
+      data: [
+      {
+        type: "bar",
+        dataPoints: Arr
+      }
+      ]
+    });
+
+chart.render();
+}
+</script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
+<body>
+  <div id="chartContainer" style="height: 300px; width: 100%;">
+  </div>
+</body>
+</html>

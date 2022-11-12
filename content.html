@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<body>
+<h1>Hi</h1>
+<div id="myPlot" style="width:100%;max-width:700px"></div>
+
+<script>
+        function ObjectId(string) {
+            this.string = string;
+        }
+       
+        var categories_Arr = [];
+        var data_Arr = [];
+
+        var Users_Arr = [<%- Array %>];
+        //console.log(Users_Arr);
+        for (var i=0;i<Users_Arr.length;i++) {
+            categories_Arr.push(Users_Arr[i].name);
+            data_Arr.push(Users_Arr[i].rating);
+        }
+
+        console.log("categories_Arr"); 
+        console.log(categories_Arr);
+
+        console.log("data_Arr"); 
+        console.log(categories_Arr);
+
+        var options = {
+          series: [{
+          data: data_Arr
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: categories_Arr
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+</script>
+
+</body>
+</html>
