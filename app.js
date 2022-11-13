@@ -164,6 +164,16 @@ app.route("/add")
                     { name: data ,
                      rating : user.result[0].rating }
                 );
+                User.deleteMany(
+                    {name : data},
+                    function (err) {
+                        if (!err) {
+                            console.log("delete duplicate");
+                        } else {
+                            res.redirect("/error");
+                        }
+                    }
+                )
                 user_info.save();
                 console.log(user_info);
                 console.log("Inserted");
