@@ -16,7 +16,8 @@ mongoose.connect('mongodb+srv://admin_codeforces:mongomongo@cluster0.dd1zn1z.mon
 
 const User = mongoose.model('User', { 
     name: String,
-    rating : Number
+    rating : Number,
+    rank : String
 });
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -162,7 +163,8 @@ app.route("/add")
                 const data = req.body.user;
                 const user_info = new User(
                     { name: data ,
-                     rating : user.result[0].rating }
+                     rating : user.result[0].rating, 
+                     rank : user.result[0].rank}
                 );
                 User.deleteMany(
                     {name : data},
@@ -260,10 +262,35 @@ app.route("/graph")
                     const dataArr = [];
 
                     for (var i=0;i<found.length;i++) {
+                        let user_color = "";
+                        if (found[i].rank == "newbie") {
+                            user_color = "grey";
+                        } else if (found[i].rank == "pupil") {
+                            user_color = "green";
+                        } else if (found[i].rank == "specialist") {
+                            user_color = "cyan";
+                        } else if (found[i].rank == "expert") {
+                            user_color = "blue";
+                        } else if (found[i].rank == "candidate master") {
+                            user_color = "violet";
+                        } else if (found[i].rank == "master") {
+                            user_color = "orange";
+                        } else if (found[i].rank == "international master") {
+                            user_color = "#ff8c00";
+                        } else if (found[i].rank == "grandmaster") {
+                            user_color = "#ad3f3b";
+                        } else if (found[i].rank == "international grandmaster") {
+                            user_color = "red";
+                        } else if (found[i].rank == "legendary grandmaster") {
+                            user_color = "#750501";
+                        }
+
+
                         const obj = {
                         y : found[i].rating,
-                        label : found[i].name  
-                    };
+                        label : found[i].name, 
+                        color : user_color       
+                        };
                     dataArr.push(obj);
                     }
                     for (var i=0;i<dataArr.length;i++) {
@@ -277,6 +304,10 @@ app.route("/graph")
                                 temp = dataArr[i].label;
                                 dataArr[i].label = dataArr[j].label;
                                 dataArr[j].label = temp;
+
+                                temp = dataArr[i].color;
+                                dataArr[i].color = dataArr[j].color;
+                                dataArr[j].color = temp;
                             }  
                         }
                     }

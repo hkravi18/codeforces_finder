@@ -119,13 +119,13 @@
     <div class="row mb-3 text-center div-first">
       <div class="col-4 themed-grid-col user"><strong>USER</strong></div>
       <div class="col-4 themed-grid-col user"><strong>RATING</strong></div>
-      <div class="col-4 themed-grid-col user"><strong>ID</strong></div>
+      <div class="col-4 themed-grid-col user"><strong>RANK</strong></div>
     </div>
     <%for (var i=0;i<users_list.length;i++) {%>
     <div class="row mb-3 text-center">
       <div class="col-4 themed-grid-col user"><%=users_list[i].name%></div>
       <div class="col-4 themed-grid-col user"><%=users_list[i].rating%></div>
-      <div class="col-4 themed-grid-col user"><%=users_list[i]._id%></div>
+      <div class="col-4 themed-grid-col user"><%=users_list[i].rank%></div>
     </div>
     <%}%>
 </main>

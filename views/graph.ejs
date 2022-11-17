@@ -10,7 +10,7 @@
   <script type="text/javascript">
     //const Array = <%- JSON.stringify(Array).replace(/\\/g,'').replace(/"/,'')  %>;
     const Array = <%- JSON.stringify(Array) %>
-    
+    console.log(Array);
     window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer",
     {
