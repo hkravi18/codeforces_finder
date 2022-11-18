@@ -168,8 +168,44 @@ app.route("/myfriends")
             } 
         })
     });
-})  
+});  
     
+//RATING CHANGE 
+app.route("/ratingChange")
+.get(function (req,res) {
+    res.sendFile(__dirname + "/ratingChange.html");
+})
+.post(function (req,res) {
+    const contestId = req.body.contest_id;
+    const userHandle = req.body.user;
+    const url = "https://codeforces.com/api/user.rating?handle="+userHandle;
+    https.get (url, function (response) {
+        const chunks = []
+        response.on('data', function (chunk) {
+            chunks.push(chunk)
+        })
+
+        response.on('end', function () {
+            const data = Buffer.concat(chunks)
+            const user = JSON.parse(data);
+            console.log(user);
+            if (user.status === "FAILED")
+            {
+                res.redirect("/failure");
+            }
+            else if (user.status === "OK")
+            {
+                console.log("found");
+                res.render("ratingChange",{
+                    userName : userHandle,
+                    Array : user.result
+                });
+            } 
+        })
+    });
+});
+
+
 
 // ADD USERS 
 app.route("/add")
