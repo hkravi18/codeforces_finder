@@ -59,6 +59,7 @@ app.route("/info")
 })
 .post(function (req,res) {
     const url = "https://codeforces.com/api/";
+    //console.log(req.body);
     user_profile = req.body.user;
     const user_url = url + "user.info?handles=" + req.body.user;
     //console.log(user_url);

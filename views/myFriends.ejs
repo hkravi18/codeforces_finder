@@ -106,7 +106,9 @@
 
   <main>
     <% for (var i=0;i<Array.length;i++) {%>
-        <h1><%= Array[i] %></h1>
+      <form action="/info" method="POST">
+        <button type="submit" name="user" value="<%=Array[i]%>" class="btn btn-outline-secondary"><h1><%= Array[i] %></h1></button>
+      </form>   
     <%}%>
     
   </main>
