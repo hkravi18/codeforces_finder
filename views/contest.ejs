@@ -118,41 +118,47 @@
   <div class="container">
 
     <center><h1 style="bottom-margin : 60px">Codeforces Contests</h1>
-    <h1 style="color:white">USER : <%= userName%></h1></center>
+    <h2 style="color:#00A8CC">USER : <%= userName%></h2>
+    <h2 style="color:#00A8CC">CONTEST : <%= contestName%></h2></center>
     <hr>
-    <div class="row mb-5 text-center div-first">
-      <div class="col-4 themed-grid-col user"><strong>CONTEST</strong></div>
-      <div class="col-2 themed-grid-col user"><strong>RANK</strong></div>
-      <div class="col-2 themed-grid-col user"><strong>OLD RATING</strong></div>
-      <div class="col-2 themed-grid-col user"><strong>NEW RATING</strong></div>
-      <div class="col-2 themed-grid-col user"><strong>RATING CHANGE</strong></div>
+    <div class="row mb-6 text-center div-first">
+      <div class="col-2 themed-grid-col user"><strong>INDEX</strong></div>
+      <div class="col-2 themed-grid-col user"><strong>NAME</strong></div>
+      <div class="col-2 themed-grid-col user"><strong>RATING</strong></div>
+      <div class="col-2 themed-grid-col user"><strong>VERDICT</strong></div>
+      <div class="col-2 themed-grid-col user"><strong>PROGRAMMING LANGUAGE</strong></div>
+      <div class="col-2 themed-grid-col user"><strong>SUBMISSION TIME</strong></div>
     </div>
-    <%for (var i=Array.length-1;i>=0;i--) {%>
-    <div class="row mb-5 text-center">
-      <div class="col-4 themed-grid-col user">
-      <form  action="/contest" style="display: inline;" method="POST">
-        <button type="submit" name="contestId" class="btn btn-outline-secondary" style="display: inline;" value="<%= Array[i].contestId%>"><div style="display: inline;"><%=Array[i].contestName%></div> </button>
-        <input type="hidden" name="user" value="<%= userName%>"> 
-        <input type="hidden" name="contestName" value="<%=Array[i].contestName%>"> 
-      </form>
-      </div>
-      <div class="col-2 themed-grid-col user"><%=Array[i].rank%></div>
-      <div class="col-2 themed-grid-col user"><%=Array[i].oldRating%></div>
-      <div class="col-2 themed-grid-col user"><%=Array[i].newRating%></div>
-      <%if (Array[i].oldRating > Array[i].newRating) {%>
-        <% var diff = Array[i].oldRating - Array[i].newRating%>
-        <div class="col-2 themed-grid-col user" style="color:red;"><strong><%= diff%></strong></div> 
-      <%} else if (Array[i].oldRating < Array[i].newRating) {%>
-        <% var diff = Array[i].newRating - Array[i].oldRating%>
-        <div class="col-2 themed-grid-col user" style="color:green;"><strong><%= diff%></strong></div> 
+    <hr>
+    <%for (var i=0;i<Array.length;i++) {%>
+    <div class="row mb-6 text-center">
+        <%var hrs = ~~(Array[i].relativeTimeSeconds / 3600);%>
+        <%var mins = ~~((Array[i].relativeTimeSeconds % 3600) / 60);%>
+        <%var secs = ~~Array[i].relativeTimeSeconds % 60;%>
+        <%let ret = hrs+ ":" + mins + ":" + secs;%>
+        
+      <div class="col-2 themed-grid-col user"><%=Array[i].problem.index%></div>
+      <div class="col-2 themed-grid-col user"><%=Array[i].problem.name%></div>
+      <div class="col-2 themed-grid-col user"><%=Array[i].problem.rating%></div>
+      <%if (Array[i].verdict === "OK") {%>
+        <div class="col-2 themed-grid-col user" style="color:green;"><strong><%= Array[i].verdict%></strong></div> 
       <%} else {%>
-        <div class="col-2 themed-grid-col user">0</div>
+        <div class="col-2 themed-grid-col user" style="color:red;"><strong><%= Array[i].verdict%></strong></div> 
       <%}%>
-      
+      <div class="col-2 themed-grid-col user"><%=Array[i].programmingLanguage%></div>
+      <div class="col-2 themed-grid-col user"><%= ret%></div>
     </div>
+    <hr>
     <%}%>
-</main>
+   </main>
 
+
+   <script>
+    function toTime(seconds) {
+    if (seconds < 0) return "-" + toTime(-seconds);
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
+    }
+   </script>     
 
     
   </body>

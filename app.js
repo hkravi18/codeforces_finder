@@ -189,7 +189,7 @@ app.route("/ratingChange")
         response.on('end', function () {
             const data = Buffer.concat(chunks)
             const user = JSON.parse(data);
-            console.log(user);
+            //console.log(user);
             if (user.status === "FAILED")
             {
                 res.redirect("/failure");
@@ -201,6 +201,42 @@ app.route("/ratingChange")
                     userName : userHandle,
                     Array : user.result
                 });
+            } 
+        })
+    });
+});
+
+
+//CONTESTS 
+app.route("/contest")
+.post(function (req,res) {
+    const user_profile = req.body.user;
+    const contestId = req.body.contestId;
+    const contestName = req.body.contestName;
+    const url = "https://codeforces.com/api/contest.status?contestId=" + contestId + "&handle=" + user_profile;
+    console.log(url);
+    https.get (url, function (response) {
+        response.on("data" ,function (data) {
+            const user = JSON.parse(data);
+            console.log(user.result);
+            if (user.status === "FAILED")
+            {
+                //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
+                res.sendFile(__dirname + "/failure_contest.html");   
+            }
+            else if (user.status === "OK")
+            {
+                if (user.result.length !== 0) {
+                    res.render("contest", 
+                    { 
+                        Array : user.result,
+                        userName : user_profile,
+                        contestName : contestName  
+                    }
+                    ); 
+                } else {
+                    res.sendFile(__dirname + "/contest_user_not_found.html"); 
+                }
             } 
         })
     });
