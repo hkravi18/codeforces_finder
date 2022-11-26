@@ -27,7 +27,7 @@
 <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
 <meta name="theme-color" content="#712cf9">
 
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -243,14 +243,33 @@
           </div>
         </div>
       </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Submissions </strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show Submissions of User</li>
+            </ul>
+            <form action="/submission" method="GET">
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Submissions</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
    
   </body>
   <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+  
   <script>
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-        $("svg").addClass("phone-img");
-    }
+    const Swal = require('sweetalert2');
+    Swal.fire(
+       'The Internet?',
+       'That thing is still around?',
+       'question'
+    )
   </script>
 </html>

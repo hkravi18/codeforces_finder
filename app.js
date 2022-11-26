@@ -11,6 +11,7 @@ const Chart = require('chart.js');
 const { stringify } = require("querystring");
 //var fileId = mongoose.Types.ObjectId();
 const sha512 = require('js-sha512');
+const Swal = require('sweetalert2');
 
 
 function unixTimestamp () {  
@@ -205,6 +206,41 @@ app.route("/ratingChange")
         })
     });
 });
+
+//Submissions
+app.route("/submission")
+.get(function (req,res) {
+    res.sendFile(__dirname + "/submissions.html");
+})
+.post(function (req,res) {
+    const userHandle = req.body.user;
+    const url = "https://codeforces.com/api/user.status?from=1&count=80&handle="+userHandle;
+    https.get (url, function (response) {
+        const chunks = []
+        response.on('data', function (chunk) {
+            chunks.push(chunk)
+        })
+
+        response.on('end', function () {
+            const data = Buffer.concat(chunks)
+            const user = JSON.parse(data);
+            console.log(user);
+            if (user.status === "FAILED")
+            {
+                res.redirect("/failure");
+            }
+            else if (user.status === "OK")
+            {
+                console.log("found");
+                res.render("submissions",{
+                    userName : userHandle,
+                    Array : user.result
+                });
+            } 
+        })
+    });
+});
+
 
 
 //CONTESTS 
@@ -427,14 +463,14 @@ app.route("/graph")
 app.route("/removeAll")
 .get(function (req,res) {
     User.deleteMany(
-       function (err) {
-        if (!err) {
-            console.log("Deleted all");
-            res.sendFile(__dirname + "/removedAll.html"); 
-        } else {
-            res.redirect("/error");
-        }
-       }   
+        function (err) {
+         if (!err) {
+             console.log("Deleted all");
+             res.sendFile(__dirname + "/removedAll.html"); 
+         } else {
+             res.redirect("/error");
+         }
+        }   
     );
 });
 
