@@ -241,6 +241,34 @@ app.route("/submission")
     });
 });
 
+// Upcoming Contests
+app.route("/upcomingContest")
+.get(function (req,res) {
+    const url = "https://codeforces.com/api/contest.list";
+    https.get (url, function (response) {
+        const chunks = []
+        response.on('data', function (chunk) {
+            chunks.push(chunk)
+        })
+
+        response.on('end', function () {
+            const data = Buffer.concat(chunks)
+            const user = JSON.parse(data);
+            //console.log(user);
+            if (user.status === "FAILED")
+            {
+                res.redirect("/failure");
+            }
+            else if (user.status === "OK")
+            {
+                console.log("found");
+                res.render("upcomingContests",{
+                    Array : user
+                });
+            } 
+        })
+    });
+});
 
 
 //CONTESTS 
