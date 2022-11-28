@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -89,10 +88,6 @@
         size: 40px;
       }
       
-      form {
-        margin-top: 10px;
-      } 
-
     </style>
 
     
@@ -130,72 +125,164 @@
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3 text-color" style="color:#00A8CC;">
-            <h4 class="my-0 fw-normal" ><strong>USER LIST</strong></h4>
+            <h4 class="my-0 fw-normal" ><strong>Add Users</strong></h4>
           </div>
           <div class="card-body options">
             <ul class="list-unstyled mt-3 mb-4">
-              <li>My User List</li>
+              <li>Add user to List</li>
             </ul>
             <form action="/add" method="GET">
             <a href=""><button class="w-100 btn btn-lg btn-outline-primary" type="submit" value="add">Add User</button></a>
             </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Remove Users</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Remove user from List</li>
+            </ul>
             <form action="/remove" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Remove User</button>
-            </form>
-            <form action="/showList" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Users List</button>
-            </form>
-            <form action="/removeAll" method="GET">
-              <a href=""><button class="w-100 btn btn-lg btn-outline-primary" type="submit" value="add">Remove All</button></a>
-            </form>
-            <form action="/graph" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show graph</button>
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Remove User</button>
             </form>
           </div>
         </div>
       </div>
-      
-      
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal"><strong>FRIENDS AND PERFORMANCE</strong></h4>
+            <h4 class="my-0 fw-normal"><strong>Show Users</strong></h4>
           </div>
           <div class="card-body options">
             <ul class="list-unstyled mt-3 mb-4">
-              <li>My Friends List , User info , Rating changes and Submissions</li>
+              <li>Show Users List</li>
+            </ul>
+            <form action="/showList" method="GET">
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Users List</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Ratings Graph</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show Users rating graph</li>
+            </ul>
+            <form action="/graph" method="GET">
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show graph</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 text-color" style="color:#00A8CC;">
+            <h4 class="my-0 fw-normal" ><strong>User Info</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show the user information</li>
+            </ul>
+            <form action="/info" method="GET">
+            <a href=""><button class="w-100 btn btn-lg btn-outline-primary" type="submit" value="add">Show Info</button></a>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 text-color" style="color:#00A8CC;">
+            <h4 class="my-0 fw-normal" ><strong>Remove All</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Remove All Users</li>
+            </ul>
+            <form action="/removeAll" method="GET">
+            <a href=""><button class="w-100 btn btn-lg btn-outline-primary" type="submit" value="add">Remove All</button></a>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>My Friends</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show My Friends</li>
             </ul>
             <form action="/myfriends" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Friends</button>
-            </form>
-            <form action="/ratingChange" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Rating Change</button>
-            </form>
-            <form action="/submission" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Submissions</button>
-            </form>
-            <form action="/info" method="GET">
-              <a href=""><button class="w-100 btn btn-lg btn-outline-primary" type="submit" value="add">Show Info</button></a>
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Friends</button>
             </form>
           </div>
         </div>
       </div>
-      
-      
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal"><strong>CONTESTS</strong></h4>
+            <h4 class="my-0 fw-normal"><strong>Rating Change </strong></h4>
           </div>
           <div class="card-body options">
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Show Upcoming and Past contests and User performance in past contests</li>
+              <li>Show Rating Change in contest</li>
+            </ul>
+            <form action="/ratingChange" method="GET">
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Rating Change</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Submissions </strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show Submissions of User</li>
+            </ul>
+            <form action="/submission" method="GET">
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Submissions</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Upcoming Contests</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show Upcoming Contests</li>
             </ul>
             <form action="/upcomingContest" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Upcoming Contests</button>
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Upcoming Contests</button>
             </form>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal"><strong>Past Contests</strong></h4>
+          </div>
+          <div class="card-body options">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Show Past Contests and Users performance</li>
+            </ul>
             <form action="/pastContest" method="GET">
-              <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Past Contests</button>
+            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">Show Past Contests</button>
             </form>
           </div>
         </div>
