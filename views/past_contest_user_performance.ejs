@@ -1,0 +1,187 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Codeforces Finder</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/grid/">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    
+
+    
+
+<link href="/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/5.2/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+<link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#712cf9">
+
+
+    <style>
+      
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      body {
+        margin : 0;
+        color:#00A8CC;
+      } 
+
+      span {
+        color:#00A8CC;
+      }
+
+      .user {
+        background-color:#142850;
+        color:#00A8CC;
+      }
+
+      h1 {
+        color:#00A8CC;
+      }
+
+      .div-first {
+        margin-top: 80px;
+      }
+
+      table {
+        color:white;
+      }
+
+      tr {
+        border-bottom: 1px solid #ddd;
+      }
+
+      tr:hover {background-color: #434242;}
+
+      table td{
+        color:white;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="showList.css" rel="stylesheet">
+    <script>
+    </script>
+  </head>
+  <body style="background-color:#142850;">
+    <center>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="10%" height="10%" viewBox="0 0 1000 600"><rect width="1000" height="600" x="0" y="0" fill="#142850"/><g><circle r="166.66666666666666" cx="276.2433878580729" cy="298.465624830461" fill="001253" transform="matrix(1.140753312111317,0,0,1.1407533121113167,0,-40.47561136887245)"/><path d="M240.78340541279582 373.4656010162479L222.1412121964443 373.4656010162479L222.1412121964443 223.46560506546206L274.45213515407124 223.46560506546206Q300.126614779438 223.46560506546206 313.3287373774948 235.70576395662522Q326.5308599755516 247.9459228477884 326.5308599755516 267.914962556407L326.5308599755516 267.914962556407Q326.5308599755516 287.61863296657214 313.3287373774948 299.85879185773535Q300.126614779438 312.0989507488986 274.45213515407124 312.0989507488986L274.45213515407124 312.0989507488986L240.78340541279582 312.0989507488986L240.78340541279582 373.4656010162479ZM330.3455436408192 373.4656010162479L306.2301086438663 373.4656010162479L263.240282294415 305.3983759629501L283.54103362610033 305.3983759629501L330.3455436408192 373.4656010162479ZM240.78340541279582 239.4872764595862L240.78340541279582 298.96317047545506L273.0257751748843 298.96317047545506Q289.8435544643686 298.96317047545506 298.63391247563766 290.6372087364796Q307.4242704869066 282.34441815981074 307.4242704869066 269.1091243994473L307.4242704869066 269.1091243994473Q307.4242704869066 255.47577669140372 298.9987952610111 247.481526575495Q290.57332003511544 239.4872764595862 274.45213515407124 239.4872764595862L274.45213515407124 239.4872764595862L240.78340541279582 239.4872764595862Z " fill="#00a8cc" transform="matrix(1.140753312111317,0,0,1.1407533121113167,0,-40.47561136887245)"/><path d="M588.0099710079841 373.46560669230905L588.0099710079841 373.46560669230905Q568.8719291807677 373.46560669230905 555.0464541483973 363.86458236427404Q541.2209791160269 354.2315546218123 533.7321801401596 337.14173131790994Q526.2433811642923 320.01990459958085 526.2433811642923 297.42549401427186L526.2433811642923 297.42549401427186Q526.2433811642923 273.3589263653308 534.3722484286952 256.8771679355374Q542.5011156930982 240.39540950574394 556.4866077976025 231.94650809707315Q570.5041033165336 223.46560327397557 588.0099710079841 223.46560327397557L588.0099710079841 223.46560327397557Q611.1484396385484 223.46560327397557 625.2619454007599 235.05083929647114Q639.3754511629713 246.63607531896668 644.6880179578174 265.16605227207424L644.6880179578174 265.16605227207424L625.3259522296134 269.1024722465686Q620.8454742098637 255.6290347728928 610.9884225664146 247.5961777517702Q601.1313709229653 239.59532414507436 588.0099710079841 239.59532414507436L588.0099710079841 239.59532414507436Q576.5847520576225 239.59532414507436 566.9837277295875 246.12402068813816Q557.3506999871257 252.62071381677518 551.4940751470243 265.5180898307689Q545.6054468924962 278.41546584476254 545.6054468924962 297.42549401427186L545.6054468924962 297.42549401427186Q545.6054468924962 314.70733780473483 550.2779453988065 328.21277869283745Q554.9504439051169 341.6862161665132 564.3274443321644 349.399039043368Q573.7044447592119 357.11186192022274 588.0099710079841 357.11186192022274L588.0099710079841 357.11186192022274Q605.16380114074 357.11186192022274 615.2448766851768 347.8948785653091Q625.3259522296134 338.6778952103956 625.3259522296134 323.70029725866095L625.3259522296134 323.70029725866095L644.9120418588049 323.70029725866095Q644.9120418588049 339.2539566700776 637.7752804416322 350.3911448905983Q630.6385190244595 361.4963296966921 617.7731464248926 367.4809681945005Q604.9397772397525 373.46560669230905 588.0099710079841 373.46560669230905ZM696.9815971311814 370.7133130516057L679.0276816377559 370.7133130516057L679.0276816377559 225.99387301369146L767.03707131141 225.99387301369146L767.03707131141 241.45152218182778L696.9815971311814 241.45152218182778L696.9815971311814 289.6166608941367L762.2045557329658 289.6166608941367L762.2045557329658 305.04230664784626L696.9815971311814 305.04230664784626L696.9815971311814 370.7133130516057Z " fill="#00a8cc" transform="matrix(1.140753312111317,0,0,1.1407533121113167,0,-40.47561136887245)"/></g></svg>
+    </center>
+  <main>
+    <table class="table">
+      <thead>
+      <tr>
+         <th scope="col" style="color:white;">USER</th>
+         <th scope="col" style="color:white;">RANK</th>
+         <th scope="col" style="color:white;">PROBLEMS</th>
+         <%for (var i=1;i<problems.length;i++) {%>
+          <th></th>
+         <%}%> 
+         <th scope="col" style="color:white;">NUMBER OF PROBLEMS SOLVED</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <%for (var i=0;i<problems.length;i++) {%>
+          <td style="color:#F06292;"><%=problems[i].name%> (<%=problems[i].index%>)</td>
+        <%}%> 
+        <td></td>
+      </tr>
+
+        <%for (var i=0;i<rows.length;i++) {%>
+          <tr>
+          <%if (rows[i].party.participantType === "CONTESTANT") {%> 
+            <td scope="row" style="color:#DBA39A;"><%=rows[i].party.members[0].handle%></td>
+            <td><%=rows[i].rank%></td>
+            <% let count = 0; %> 
+            <%for (var j=0;j<rows[i].problemResults.length;j++) {%>
+              <%if (rows[i].problemResults[j].points === 0 && rows[i].problemResults[j].rejectedAttemptCount === 0){%>
+                <td>0</td>
+              <%} else if (rows[i].problemResults[j].points >0  && rows[i].problemResults[j].rejectedAttemptCount === 0){%>
+                <td style="color:green;">+1</td>  
+                <% count = count + 1 ; %> 
+              <%} else if (rows[i].problemResults[j].points >0 && rows[i].problemResults[j].rejectedAttemptCount > 0){%>
+                <td style="color:green;">+1  <span style="color:red;">(<%= rows[i].problemResults[j].rejectedAttemptCount%>)</span> </td>  
+                <% count = count + 1 ; %> 
+              <%} else if (rows[i].problemResults[j].points === 0 && rows[i].problemResults[j].rejectedAttemptCount > 0){%>
+                <td style="color:red;">-<%= rows[i].problemResults[j].rejectedAttemptCount%></td>
+              <%}%>
+            <%}%>
+            <%if (count > 0) {%>
+              <td style="color:#EF9A53;"><%=count%></td> 
+            <%} else {%>
+              <td style="color:white;"><%=count%></td>
+            <%}%>
+            
+          <%}%> 
+          </tr> 
+        <%}%> 
+     
+      </tbody>
+    </table>
+  </main>  
+  </body>
+</html>

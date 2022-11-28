@@ -20,7 +20,7 @@ function unixTimestamp () {
     )
 }
 
-mongoose.connect('mongodb+srv://admin_codeforces:mongomongo@cluster0.dd1zn1z.mongodb.net/usersdb');
+mongoose.connect('mongodb+srv://admin_codeforces:mongomongo@cluster0.dd1zn1z.mongodb.net/users');
 
 const User = mongoose.model('User', { 
     name: String,
@@ -270,6 +270,97 @@ app.route("/upcomingContest")
     });
 });
 
+//PAST CONTESTS
+app.route("/pastContest")
+.get(function (req,res) {
+    const url = "https://codeforces.com/api/contest.list";
+    https.get (url, function (response) {
+        const chunks = []
+        response.on('data', function (chunk) {
+            chunks.push(chunk)
+        })
+
+        response.on('end', function () {
+            const data = Buffer.concat(chunks)
+            const user = JSON.parse(data);
+            //console.log(user);
+            if (user.status === "FAILED")
+            {
+                res.redirect("/failure");
+            }
+            else if (user.status === "OK")
+            {
+                console.log("found");
+                res.render("pastContest",{
+                    Array : user
+                });
+            } 
+        })
+    });
+})
+.post(function (req,res) {
+    const contestId =  req.body.contestId;
+    let p = 1;
+    let url = "https://codeforces.com/api/contest.standings?contestId=" + contestId + "&handles=";
+    let userArray = [];
+    User.find({},function (err,found) {
+        if (!err) {
+            if (found) {
+                userArray = found;
+                found.forEach(function (user_contest) {
+                    if (p===1) {
+                        url = url + user_contest.name;
+                        p++;
+                    } else {
+                        url = url + ";" + user_contest.name;
+                        p++;
+                    }  
+                })
+                console.log(url);
+                https.get(url, function (response) {
+                    const chunks = []
+                    response.on('data', function (chunk) {
+                        chunks.push(chunk)
+                    })
+            
+                    response.on('end', function () {
+                        const data = Buffer.concat(chunks)
+                        const user = JSON.parse(data);
+                        //console.log(newUser);
+                        //console.log(user);
+                        
+                        if (user.status === "FAILED")
+                        {
+                            res.redirect("/failure");
+                        }
+                        else if (user.status === "OK")
+                        {
+                            console.log("CONTESTS");
+                            const contest = user.result.contest;
+                            console.log(contest);
+                            console.log("PROBLEMS");
+                            const problems = user.result.problems;
+                            console.log(problems);
+                            console.log("ROWS");
+                            const rows = user.result.rows;
+                            console.log(rows);
+                            console.log("found");
+                            res.render("past_contest_user_performance",{
+                                problems : problems,
+                                contest : contest,
+                                rows : rows
+                            });
+                        } 
+                    })
+                });
+            } else {
+                res.sendFile(__dirname + "failure_contest.html");
+            }
+        } else {
+            res.redirect("/error");
+        }
+    })
+});
 
 //CONTESTS 
 app.route("/contest")
@@ -346,6 +437,7 @@ app.route("/add")
                     }
                 )
                 user_info.save();
+                console.log("////////////");
                 console.log(user_info);
                 console.log("Inserted");
                 res.redirect("/");
