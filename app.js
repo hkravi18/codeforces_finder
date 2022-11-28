@@ -362,6 +362,8 @@ app.route("/pastContest")
     })
 });
 
+
+
 //CONTESTS 
 app.route("/contest")
 .post(function (req,res) {
@@ -397,8 +399,148 @@ app.route("/contest")
     });
 });
 
+function getVerdict(verdictComment) {
+    switch (verdictComment) {
+        case "FAILED": return 0;
+        case "OK": return 1;
+        case "PARTIAL": return 2;
+        case "COMPILATION_ERROR": return 3;
+        case "RUNTIME_ERROR": return 4;
+        case "WRONG_ANSWER": return 5;
+        case "PRESENTATION_ERROR": return 6;
+        case "TIME_LIMIT_EXCEEDED": return 7;
+        case "MEMORY_LIMIT_EXCEEDED": return 8;
+        case "IDLENESS_LIMIT_EXCEEDED": return 9;
+        case "SECURITY_VIOLATED": return 10;
+        case "CRASHED": return 11;
+        case "INPUT_PREPARATION_CRASHED": return 12;
+        case "CHALLENGED": return 13;
+        case "SKIPPED": return 14;
+        case "TESTING": return 15;
+        case "REJECTED": return 16;
+    }     
+}
 
 
+
+// EXTRA USER INFO 
+app.route("/userGraphicalInfo")
+.get(function (req,res) {
+    res.sendFile(__dirname + "/userGraphicalInfo.html");
+})
+.post(function (req,res) {
+    const userName = req.body.userName;
+    const url = "https://codeforces.com/api/user.status?from=1&handle=" + userName;
+    console.log(url);
+    https.get(url, function (response) {
+        const chunks = []
+        response.on('data', function (chunk) {
+            chunks.push(chunk)
+        })
+
+        response.on('end', function () {
+            const data = Buffer.concat(chunks)
+            const user = JSON.parse(data);
+           
+            //console.log(user[0]);
+
+            let problemsSubsituteText = [];
+            let problems = [];
+            let verdict = [];
+            let verdictOptions = ["FAILED", 
+            "OK",
+            "PARTIAL",
+            "COMPILATION_ERROR", 
+            "RUNTIME_ERROR", 
+            "WRONG_ANSWER", 
+            "PRESENTATION_ERROR",
+            "TIME_LIMIT_EXCEEDED",
+            "MEMORY_LIMIT_EXCEEDED", 
+            "IDLENESS_LIMIT_EXCEEDED",
+            "SECURITY_VIOLATED", 
+            "CRASHED",
+            "INPUT_PREPARATION_CRASHED",
+            "CHALLENGED",
+            "SKIPPED",
+            "TESTING",
+            "REJECTED"]
+
+
+            for (let j=0;j<14;j++) {
+                const text = "["+(800+j*100)+" - " + (900+j*100) + "]";
+                problemsSubsituteText.push(text);
+            }
+
+            for (let j=0;j<17;j++) {
+                let obj = {
+                    y : 0,
+                    indexLabel : verdictOptions[j],
+                    color : ""
+                }
+                verdict.push(obj);
+            }
+
+            verdict[1].color = "green";
+            verdict[5].color = "red";
+
+            for (let j=0;j<14;j++) {
+                let obj = {
+                    y : 0,
+                    indexLabel : problemsSubsituteText[j]
+                }
+                problems.push(obj);
+            }
+
+            for (let i=0;i<user.result.length;i++) {
+                let pos = getVerdict(user.result[i].verdict) ;
+                    verdict[pos].y = verdict[pos].y + 1;
+                if (user.result[i].problem.rating >=700 && user.result[i].problem.rating<800 && user.result[i].verdict === "OK") {
+                    problems[0].y = problems[0].y + 1; 
+                } else if (user.result[i].problem.rating >=800 && user.result[i].problem.rating<900 && user.result[i].verdict === "OK") {
+                    problems[1].y = problems[1].y + 1; 
+                } else if (user.result[i].problem.rating >=900 && user.result[i].problem.rating<1000 && user.result[i].verdict === "OK") {
+                    problems[2].y = problems[2].y + 1;  
+                } else if (user.result[i].problem.rating >=1000 && user.result[i].problem.rating<1100 && user.result[i].verdict === "OK") {
+                    problems[3].y = problems[3].y + 1; 
+                } else if (user.result[i].problem.rating >=1100 && user.result[i].problem.rating<1200 && user.result[i].verdict === "OK") {
+                    problems[4].y = problems[4].y + 1; 
+                } else if (user.result[i].problem.rating >=1200 && user.result[i].problem.rating<1300 && user.result[i].verdict === "OK") {
+                    problems[5].y = problems[5].y + 1; 
+                } else if (user.result[i].problem.rating >=1300 && user.result[i].problem.rating<1400 && user.result[i].verdict === "OK") {
+                    problems[6].y = problems[6].y + 1; 
+                } else if (user.result[i].problem.rating >=1400 && user.result[i].problem.rating<1500 && user.result[i].verdict === "OK") {
+                    problems[7].y = problems[7].y + 1; 
+                } else if (user.result[i].problem.rating >=1500 && user.result[i].problem.rating<1600 && user.result[i].verdict === "OK") {
+                    problems[8].y = problems[8].y + 1; 
+                } else if (user.result[i].problem.rating >=1600 && user.result[i].problem.rating<1700 && user.result[i].verdict === "OK") {
+                    problems[9].y = problems[9].y + 1; 
+                } else if (user.result[i].problem.rating >=1700 && user.result[i].problem.rating<1800 && user.result[i].verdict === "OK") {
+                    problems[10].y = problems[10].y + 1; 
+                } else if (user.result[i].problem.rating >=1800 && user.result[i].problem.rating<1900 && user.result[i].verdict === "OK") {
+                    problems[11].y = problems[11].y + 1; 
+                } else if (user.result[i].problem.rating >=1900 && user.result[i].problem.rating<2000 && user.result[i].verdict === "OK") {
+                    problems[12].y = problems[12].y + 1;  
+                } else if (user.result[i].problem.rating >=2000 && user.result[i].problem.rating<2100 && user.result[i].verdict === "OK") {
+                    problems[13].y = problems[13].y + 1; 
+                }
+            }
+
+            
+
+            console.log("FOUND");
+            console.log(problems); 
+            //console.log("FOUND");
+            //console.log(problems); 
+
+            res.render("userGraphicalInfo",{
+                problems : problems,
+                verdict : verdict  
+            });
+        })
+    });
+});
+
+            
 // ADD USERS 
 app.route("/add")
 .get(function(req,res){
@@ -578,6 +720,10 @@ app.route("/graph")
         } 
     );
 });
+
+
+
+
 
 //REMOVE ALL 
 app.route("/removeAll")
