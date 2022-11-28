@@ -399,6 +399,9 @@ app.route("/contest")
     });
 });
 
+
+
+
 function getVerdict(verdictComment) {
     switch (verdictComment) {
         case "FAILED": return 0;
@@ -421,7 +424,42 @@ function getVerdict(verdictComment) {
     }     
 }
 
+function getLanguage(languageComment) {
+    
+    switch (languageComment) {
+        case "GNU C++": return 0;
+        case "GNU C++11": return 1;
+        case "GNU C++14": return 2;
+        case "GNU C++17": return 3;
+        case "GNU C++20": return 4;
+    }
+    if (languageComment.length >=2 && languageComment.substring(0,2) === "C#") {return 5;}  
+    if (languageComment.length >=2 && languageComment.substring(0,2) === "Go") {return 6;} 
+    if (languageComment.length >=3 && languageComment.substring(0,3) === "PHP") {return 11;}
+    if (languageComment.length >=3 && languageComment.substring(0,3) === "Kot") {return 9;} //Kotlin  
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Hask") {return 7;} //Haskell 
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Java") {return 8;}  
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Perl") {return 10;} 
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Rust") {return 15;}     
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Pyth") {return 12;}//Python    
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "PyPy") {return 13;}  
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Ruby") {return 14;} 
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Scal") {return 16;}//Scala  
+    if (languageComment.length >=4 && languageComment.substring(0,4) === "Node") {return 18;}  //Nodejs
+    if (languageComment.length >=6 && languageComment.substring(0,6) === "Javasc") {return 17;}//Javascript
+    else {return 19;}      
+}
 
+function getProblemType(problemComment) {
+    switch (problemComment) {
+        case "A": return 0;
+        case "B": return 1;
+        case "C": return 2;
+        case "D": return 3;
+        case "E": return 4;
+        case "F": return 5;
+    }     
+}
 
 // EXTRA USER INFO 
 app.route("/userGraphicalInfo")
@@ -431,6 +469,64 @@ app.route("/userGraphicalInfo")
 .post(function (req,res) {
     const userName = req.body.userName;
     const url = "https://codeforces.com/api/user.status?from=1&handle=" + userName;
+    const secondUrl = "https://codeforces.com/api/user.rating?handle="+userName;  
+    let problems = [];
+    let verdict = [];
+    let language = [];
+    let problemTypes = [];
+    
+    let problemsTried = 0;
+    let problemsSolved = 0;
+
+    let numberOfContests = 0;
+    let bestRank = 20000;
+    let worstRank = 0;
+    let maxRatingUp = 0;
+    let maxRatingDown = 0;
+
+
+    https.get(secondUrl, function (response) {
+        const secondchunks = []
+        response.on('data', function (secondchunk) {
+            secondchunks.push(secondchunk)
+        })
+
+        response.on('end', function () {
+            const seconddata = Buffer.concat(secondchunks)
+            const userData = JSON.parse(seconddata);
+            //console.log(newUser);
+            //console.log(user);
+            
+            if (userData.status === "FAILED")
+            {
+                res.redirect("/failure");
+            }
+            else if (userData.status === "OK")
+            {
+                numberOfContests = userData.result.length;
+                for (let k=0;k<userData.result.length;k++) {
+                    if (userData.result[k].rank > worstRank) {
+                        worstRank = userData.result[k].rank;
+                    }
+                    if (userData.result[k].rank < bestRank) {
+                        bestRank = userData.result[k].rank;
+                    }
+                    if ((userData.result[k].oldRating - userData.result[k].newRating) > 0) {
+                        if ((userData.result[k].oldRating - userData.result[k].newRating) > maxRatingDown) {
+                            maxRatingDown = (userData.result[k].oldRating - userData.result[k].newRating);
+                        }
+                    } else {
+                        if ((userData.result[k].newRating - userData.result[k].oldRating) > maxRatingUp) {
+                            maxRatingUp = (userData.result[k].newRating - userData.result[k].oldRating);
+                        }
+                    }
+                }
+
+                
+            } 
+        })
+    });
+    
     console.log(url);
     https.get(url, function (response) {
         const chunks = []
@@ -445,8 +541,6 @@ app.route("/userGraphicalInfo")
             //console.log(user[0]);
 
             let problemsSubsituteText = [];
-            let problems = [];
-            let verdict = [];
             let verdictOptions = ["FAILED", 
             "OK",
             "PARTIAL",
@@ -463,8 +557,42 @@ app.route("/userGraphicalInfo")
             "CHALLENGED",
             "SKIPPED",
             "TESTING",
-            "REJECTED"]
+            "REJECTED"];
 
+            let usedLanguages = [
+            "GNU C++",
+            "GNU C++ 11",
+            "GNU C++ 14",
+            "GNU C++ 17",
+            "GNU C++ 20",
+            "C#",
+            "Go",
+            "Haskell",
+            "Java",
+            "Kotlin",
+            "Perl",
+            "PHP",
+            "Python",
+            "PyPy",
+            "Ruby",
+            "Rust",
+            "Scala",
+            "Javascript",
+            "Nodejs",
+            "Others"
+            ];
+
+            let typesOfProblems = [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+            ]; 
+
+
+            let problemSet = new Set();
 
             for (let j=0;j<14;j++) {
                 const text = "["+(800+j*100)+" - " + (900+j*100) + "]";
@@ -491,9 +619,36 @@ app.route("/userGraphicalInfo")
                 problems.push(obj);
             }
 
+
+            for (let j=0;j<20;j++) {
+                let obj = {
+                    y : 0,
+                    indexLabel : usedLanguages[j],
+                    color : ""
+                }
+                language.push(obj);
+            }
+
+
+            for (let j=0;j<6;j++) {
+                let obj = {
+                    y : 0,
+                    indexLabel : typesOfProblems[j],
+                    color : ""
+                }
+                problemTypes.push(obj);
+            }
+
             for (let i=0;i<user.result.length;i++) {
-                let pos = getVerdict(user.result[i].verdict) ;
-                    verdict[pos].y = verdict[pos].y + 1;
+                let pos_verdict = getVerdict(user.result[i].verdict) ;
+                    verdict[pos_verdict].y = verdict[pos_verdict].y + 1;
+                let pos_language = getLanguage(user.result[i].programmingLanguage) ;
+                    language[pos_language].y = language[pos_language].y + 1;   
+                if (user.result[i].verdict === "OK") {
+                    problemsSolved = problemsSolved + 1;
+                    let pos_problemType = getProblemType(user.result[i].problem.index) ;
+                    problemTypes[pos_problemType].y = problemTypes[pos_problemType].y + 1;    
+                }
                 if (user.result[i].problem.rating >=700 && user.result[i].problem.rating<800 && user.result[i].verdict === "OK") {
                     problems[0].y = problems[0].y + 1; 
                 } else if (user.result[i].problem.rating >=800 && user.result[i].problem.rating<900 && user.result[i].verdict === "OK") {
@@ -523,21 +678,32 @@ app.route("/userGraphicalInfo")
                 } else if (user.result[i].problem.rating >=2000 && user.result[i].problem.rating<2100 && user.result[i].verdict === "OK") {
                     problems[13].y = problems[13].y + 1; 
                 }
+ 
+                problemSet.add(user.result[i].problem.name); 
             }
-
-            
-
-            console.log("FOUND");
-            console.log(problems); 
-            //console.log("FOUND");
-            //console.log(problems); 
-
+            problemsTried = problemSet.size;
             res.render("userGraphicalInfo",{
                 problems : problems,
-                verdict : verdict  
-            });
+                verdict : verdict,
+                language : language,
+                problemTypes : problemTypes,
+                problemsTried : problemsTried,
+                problemsSolved : problemsSolved,
+                numberOfContests : numberOfContests,
+                bestRank : bestRank,
+                worstRank : worstRank,
+                maxRatingUp : maxRatingUp,
+                maxRatingDown : maxRatingDown
+            }); 
         })
     });
+
+    //console.log("FOUND");
+    //console.log(problemTypes); 
+    //console.log("FOUND");
+    //console.log(problems); 
+
+    
 });
 
             

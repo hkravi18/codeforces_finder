@@ -8,10 +8,12 @@
   <link href="/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
    <script type="text/javascript">
     const problems = <%- JSON.stringify(problems) %>
-    console.log(problems);
+    //console.log(problems);
     const verdict = <%- JSON.stringify(verdict) %>
-    console.log(verdict);
-    window.onload = function () {
+    //console.log(verdict);
+    const language = <%- JSON.stringify(language) %>
+	const problemTypes = <%- JSON.stringify(problemTypes) %>
+	window.onload = function () {
 	var chart = new CanvasJS.Chart("chartContainer1",
 	{
 		theme: "light2",
@@ -49,6 +51,45 @@
 		]
 	});
 	chart.render(); 
+
+	var chart = new CanvasJS.Chart("chartContainer3",
+	{
+		theme: "light2",
+		title:{
+			text: "Languages Used"
+		},		
+		data: [
+		{       
+			type: "pie",
+			showInLegend: true,
+			toolTipContent: "#percent %",
+			yValueFormatString: "#,##,,.##",
+			legendText: "{indexLabel}",
+			dataPoints: language
+		}
+		]
+	});
+	chart.render();
+
+	var chart = new CanvasJS.Chart("chartContainer4",
+	{
+		theme: "light2",
+		title:{
+			text: "Types of problems solved"
+		},		
+		data: [
+		{       
+			type: "pie",
+			showInLegend: true,
+			toolTipContent: "#percent %",
+			yValueFormatString: "#,##,,.##",
+			legendText: "{indexLabel}",
+			dataPoints: problemTypes
+		}
+		]
+	});
+	chart.render();
+
    }
    </script>
    <style>
@@ -62,10 +103,45 @@
    </style>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
 <body>
-<center><h1>RATINGS OF PROBLEMS SOLVED</h1></center>
+<center><h1 style="margin-top:40px;">RATINGS OF PROBLEMS SOLVED</h1></center>
 <div id="chartContainer1" style="height: 300px; width: 100%;"></div>
-<center><h1>PROBLEMS VERDICT</h1></center>
+<center><h1 style="margin-top:40px;">PROBLEMS VERDICT</h1></center>
 <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+<center><h1 style="margin-top:40px;">LANGUAGES USED</h1></center>
+<div id="chartContainer3" style="height: 300px; width: 100%;"></div>
+<center><h1 style="margin-top:40px;">TYPES OF PROBLEMS</h1></center>
+<div id="chartContainer4" style="height: 300px; width: 100%;"></div>
+
+<hr><hr>
+<center>
+<h1 style="color:white;  margin-top:40px;">Problems</h1>
+<div class="alert alert-success" style="width:40%;" role="alert">
+	Tried : <%= problemsTried%>
+</div>
+<div class="alert alert-secondary" style="width:40%;" role="alert">
+	Solved : <%= problemsSolved%>
+</div>
+</center>
+
+<hr><hr>
+<center>
+<h1 style="color:white;  margin-top:40px;">Contests</h1>
+<div class="alert alert-secondary" style="width:40%;" role="alert">
+	Number of Contests : <%= numberOfContests%>
+</div>
+<div class="alert alert-success" style="width:40%;" role="alert">
+	Best Rank : <%= bestRank%>
+</div>
+<div class="alert alert-success" style="width:40%;" role="alert">
+	Max Increase in Rating : <%= maxRatingUp%>
+</div>
+<div class="alert alert-danger" style="width:40%;" role="alert">
+	Worst Rank : <%= worstRank%>
+</div>
+<div class="alert alert-danger" style="width:40%;" role="alert">
+	Max Decrease in Rating : <%= maxRatingDown%>
+</div>
+</center>
 <center>
     <div class="mb-5 home-btn">
       <form action="/" method="GET">
