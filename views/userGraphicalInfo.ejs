@@ -12,7 +12,7 @@
     const verdict = <%- JSON.stringify(verdict) %>
     //console.log(verdict);
     const language = <%- JSON.stringify(language) %>
-	const problemTypes = <%- JSON.stringify(problemTypes) %>
+	
 	window.onload = function () {
 	var chart = new CanvasJS.Chart("chartContainer1",
 	{
@@ -71,7 +71,7 @@
 	});
 	chart.render();
 
-	var chart = new CanvasJS.Chart("chartContainer4",
+	/*var chart = new CanvasJS.Chart("chartContainer4",
 	{
 		theme: "light2",
 		title:{
@@ -88,11 +88,11 @@
 		}
 		]
 	});
-	chart.render();
+	chart.render();*/
 
-   }
-   </script>
-   <style>
+    }
+    </script>
+    <style>
     body {
       background-color:#142850;
       color:#00A8CC;
@@ -109,8 +109,8 @@
 <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
 <center><h1 style="margin-top:40px;">LANGUAGES USED</h1></center>
 <div id="chartContainer3" style="height: 300px; width: 100%;"></div>
-<center><h1 style="margin-top:40px;">TYPES OF PROBLEMS</h1></center>
-<div id="chartContainer4" style="height: 300px; width: 100%;"></div>
+<!--<center><h1 style="margin-top:40px;">TYPES OF PROBLEMS</h1></center>
+<div id="chartContainer4" style="height: 300px; width: 100%;"></div>-->
 
 <hr><hr>
 <center>

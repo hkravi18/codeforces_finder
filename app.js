@@ -470,21 +470,67 @@ app.route("/userGraphicalInfo")
     const userName = req.body.userName;
     const url = "https://codeforces.com/api/user.status?from=1&handle=" + userName;
     const secondUrl = "https://codeforces.com/api/user.rating?handle="+userName;  
+    
     let problems = [];
     let verdict = [];
     let language = [];
-    let problemTypes = [];
+    //let problemTypes = [];
     
     let problemsTried = 0;
     let problemsSolved = 0;
-
     let numberOfContests = 0;
     let bestRank = 20000;
     let worstRank = 0;
     let maxRatingUp = 0;
     let maxRatingDown = 0;
 
+    let arr = [];
+    let problemsSubsituteText = [];
+    let verdictOptions = ["FAILED", 
+            "OK",
+            "PARTIAL",
+            "COMPILATION_ERROR", 
+            "RUNTIME_ERROR", 
+            "WRONG_ANSWER", 
+            "PRESENTATION_ERROR",
+            "TIME_LIMIT_EXCEEDED",
+            "MEMORY_LIMIT_EXCEEDED", 
+            "IDLENESS_LIMIT_EXCEEDED",
+            "SECURITY_VIOLATED", 
+            "CRASHED",
+            "INPUT_PREPARATION_CRASHED",
+            "CHALLENGED",
+            "SKIPPED",
+            "TESTING",
+            "REJECTED"];
 
+    let usedLanguages = [
+            "GNU C++",
+            "GNU C++ 11",
+            "GNU C++ 14",
+            "GNU C++ 17",
+            "GNU C++ 20",
+            "C#",
+            "Go",
+            "Haskell",
+            "Java",
+            "Kotlin",
+            "Perl",
+            "PHP",
+            "Python",
+            "PyPy",
+            "Ruby",
+            "Rust",
+            "Scala",
+            "Javascript",
+            "Nodejs",
+            "Others"
+            ];
+    
+
+    
+    
+    
     https.get(secondUrl, function (response) {
         const secondchunks = []
         response.on('data', function (secondchunk) {
@@ -492,10 +538,10 @@ app.route("/userGraphicalInfo")
         })
 
         response.on('end', function () {
-            const seconddata = Buffer.concat(secondchunks)
-            const userData = JSON.parse(seconddata);
+            const secondData = Buffer.concat(secondchunks)
+            const userData = JSON.parse(secondData);
             //console.log(newUser);
-            //console.log(user);
+            //console.log(userData);
             
             if (userData.status === "FAILED")
             {
@@ -520,14 +566,15 @@ app.route("/userGraphicalInfo")
                             maxRatingUp = (userData.result[k].newRating - userData.result[k].oldRating);
                         }
                     }
-                }
-
-                
+                }     
             } 
         })
     });
     
+
     console.log(url);
+    console.log(secondUrl);
+    
     https.get(url, function (response) {
         const chunks = []
         response.on('data', function (chunk) {
@@ -539,162 +586,133 @@ app.route("/userGraphicalInfo")
             const user = JSON.parse(data);
            
             //console.log(user[0]);
-
-            let problemsSubsituteText = [];
-            let verdictOptions = ["FAILED", 
-            "OK",
-            "PARTIAL",
-            "COMPILATION_ERROR", 
-            "RUNTIME_ERROR", 
-            "WRONG_ANSWER", 
-            "PRESENTATION_ERROR",
-            "TIME_LIMIT_EXCEEDED",
-            "MEMORY_LIMIT_EXCEEDED", 
-            "IDLENESS_LIMIT_EXCEEDED",
-            "SECURITY_VIOLATED", 
-            "CRASHED",
-            "INPUT_PREPARATION_CRASHED",
-            "CHALLENGED",
-            "SKIPPED",
-            "TESTING",
-            "REJECTED"];
-
-            let usedLanguages = [
-            "GNU C++",
-            "GNU C++ 11",
-            "GNU C++ 14",
-            "GNU C++ 17",
-            "GNU C++ 20",
-            "C#",
-            "Go",
-            "Haskell",
-            "Java",
-            "Kotlin",
-            "Perl",
-            "PHP",
-            "Python",
-            "PyPy",
-            "Ruby",
-            "Rust",
-            "Scala",
-            "Javascript",
-            "Nodejs",
-            "Others"
-            ];
-
-            let typesOfProblems = [
-                "A",
-                "B",
-                "C",
-                "D",
-                "E",
-                "F",
-            ]; 
-
-
-            let problemSet = new Set();
-
-            for (let j=0;j<14;j++) {
-                const text = "["+(800+j*100)+" - " + (900+j*100) + "]";
-                problemsSubsituteText.push(text);
+            if (user.status === "FAILED")
+            {
+                res.redirect("/failure");
             }
+            else if (user.status === "OK")
+            {
+            
+                let problemSet = new Set();
 
-            for (let j=0;j<17;j++) {
-                let obj = {
-                    y : 0,
-                    indexLabel : verdictOptions[j],
-                    color : ""
+                for (let j=0;j<14;j++) {
+                    const text = "["+(800+j*100)+" - " + (900+j*100) + "]";
+                    problemsSubsituteText.push(text);
                 }
-                verdict.push(obj);
-            }
 
-            verdict[1].color = "green";
-            verdict[5].color = "red";
-
-            for (let j=0;j<14;j++) {
-                let obj = {
-                    y : 0,
-                    indexLabel : problemsSubsituteText[j]
+                for (let j=0;j<17;j++) {
+                    let obj = {
+                        y : 0,
+                        indexLabel : verdictOptions[j],
+                        color : ""
+                    }
+                    verdict.push(obj);
                 }
-                problems.push(obj);
-            }
 
+                verdict[1].color = "green";
+                verdict[5].color = "red";
 
-            for (let j=0;j<20;j++) {
-                let obj = {
-                    y : 0,
-                    indexLabel : usedLanguages[j],
-                    color : ""
+                for (let j=0;j<14;j++) {
+                    let obj = {
+                        y : 0,
+                        indexLabel : problemsSubsituteText[j]
+                    }
+                    problems.push(obj);
                 }
-                language.push(obj);
-            }
 
 
-            for (let j=0;j<6;j++) {
-                let obj = {
-                    y : 0,
-                    indexLabel : typesOfProblems[j],
-                    color : ""
+                for (let j=0;j<20;j++) {
+                    let obj = {
+                        y : 0,
+                        indexLabel : usedLanguages[j],
+                        color : ""
+                    }
+                    language.push(obj);
                 }
-                problemTypes.push(obj);
-            }
+                
+                let typesOfProblems = [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                ];  
 
-            for (let i=0;i<user.result.length;i++) {
-                let pos_verdict = getVerdict(user.result[i].verdict) ;
-                    verdict[pos_verdict].y = verdict[pos_verdict].y + 1;
-                let pos_language = getLanguage(user.result[i].programmingLanguage) ;
-                    language[pos_language].y = language[pos_language].y + 1;   
-                if (user.result[i].verdict === "OK") {
-                    problemsSolved = problemsSolved + 1;
-                    let pos_problemType = getProblemType(user.result[i].problem.index) ;
-                    problemTypes[pos_problemType].y = problemTypes[pos_problemType].y + 1;    
+                for (let j=0;j<6;j++) {
+                    let obj = {
+                        y : 0,
+                        indexLabel : typesOfProblems[j],
+                        color : ""
+                    }
+                    arr.push(obj);
                 }
-                if (user.result[i].problem.rating >=700 && user.result[i].problem.rating<800 && user.result[i].verdict === "OK") {
-                    problems[0].y = problems[0].y + 1; 
-                } else if (user.result[i].problem.rating >=800 && user.result[i].problem.rating<900 && user.result[i].verdict === "OK") {
-                    problems[1].y = problems[1].y + 1; 
-                } else if (user.result[i].problem.rating >=900 && user.result[i].problem.rating<1000 && user.result[i].verdict === "OK") {
-                    problems[2].y = problems[2].y + 1;  
-                } else if (user.result[i].problem.rating >=1000 && user.result[i].problem.rating<1100 && user.result[i].verdict === "OK") {
-                    problems[3].y = problems[3].y + 1; 
-                } else if (user.result[i].problem.rating >=1100 && user.result[i].problem.rating<1200 && user.result[i].verdict === "OK") {
-                    problems[4].y = problems[4].y + 1; 
-                } else if (user.result[i].problem.rating >=1200 && user.result[i].problem.rating<1300 && user.result[i].verdict === "OK") {
-                    problems[5].y = problems[5].y + 1; 
-                } else if (user.result[i].problem.rating >=1300 && user.result[i].problem.rating<1400 && user.result[i].verdict === "OK") {
-                    problems[6].y = problems[6].y + 1; 
-                } else if (user.result[i].problem.rating >=1400 && user.result[i].problem.rating<1500 && user.result[i].verdict === "OK") {
-                    problems[7].y = problems[7].y + 1; 
-                } else if (user.result[i].problem.rating >=1500 && user.result[i].problem.rating<1600 && user.result[i].verdict === "OK") {
-                    problems[8].y = problems[8].y + 1; 
-                } else if (user.result[i].problem.rating >=1600 && user.result[i].problem.rating<1700 && user.result[i].verdict === "OK") {
-                    problems[9].y = problems[9].y + 1; 
-                } else if (user.result[i].problem.rating >=1700 && user.result[i].problem.rating<1800 && user.result[i].verdict === "OK") {
-                    problems[10].y = problems[10].y + 1; 
-                } else if (user.result[i].problem.rating >=1800 && user.result[i].problem.rating<1900 && user.result[i].verdict === "OK") {
-                    problems[11].y = problems[11].y + 1; 
-                } else if (user.result[i].problem.rating >=1900 && user.result[i].problem.rating<2000 && user.result[i].verdict === "OK") {
-                    problems[12].y = problems[12].y + 1;  
-                } else if (user.result[i].problem.rating >=2000 && user.result[i].problem.rating<2100 && user.result[i].verdict === "OK") {
-                    problems[13].y = problems[13].y + 1; 
-                }
+                //json = JSON.stringify(arr);
+                //problemTypes = JSON.parse(json);
+                /*console.log("problemTypes_Arr" + arr);  
+                console.log("problemTypes_Arr_new" + json);  
+                console.log("problemTypes" + problemTypes); */ 
+
+                for (let i=0;i<user.result.length;i++) {
+                    let pos_verdict = getVerdict(user.result[i].verdict) ;
+                        verdict[pos_verdict].y = verdict[pos_verdict].y + 1;
+                    let pos_language = getLanguage(user.result[i].programmingLanguage) ;
+                        language[pos_language].y = language[pos_language].y + 1;   
+                    if (user.result[i].problem.rating >=700 && user.result[i].problem.rating<800 && user.result[i].verdict === "OK") {
+                        problems[0].y = problems[0].y + 1; 
+                    } else if (user.result[i].problem.rating >=800 && user.result[i].problem.rating<900 && user.result[i].verdict === "OK") {
+                        problems[1].y = problems[1].y + 1; 
+                    } else if (user.result[i].problem.rating >=900 && user.result[i].problem.rating<1000 && user.result[i].verdict === "OK") {
+                        problems[2].y = problems[2].y + 1;  
+                    } else if (user.result[i].problem.rating >=1000 && user.result[i].problem.rating<1100 && user.result[i].verdict === "OK") {
+                        problems[3].y = problems[3].y + 1; 
+                    } else if (user.result[i].problem.rating >=1100 && user.result[i].problem.rating<1200 && user.result[i].verdict === "OK") {
+                        problems[4].y = problems[4].y + 1; 
+                    } else if (user.result[i].problem.rating >=1200 && user.result[i].problem.rating<1300 && user.result[i].verdict === "OK") {
+                        problems[5].y = problems[5].y + 1; 
+                    } else if (user.result[i].problem.rating >=1300 && user.result[i].problem.rating<1400 && user.result[i].verdict === "OK") {
+                        problems[6].y = problems[6].y + 1; 
+                    } else if (user.result[i].problem.rating >=1400 && user.result[i].problem.rating<1500 && user.result[i].verdict === "OK") {
+                        problems[7].y = problems[7].y + 1; 
+                    } else if (user.result[i].problem.rating >=1500 && user.result[i].problem.rating<1600 && user.result[i].verdict === "OK") {
+                        problems[8].y = problems[8].y + 1; 
+                    } else if (user.result[i].problem.rating >=1600 && user.result[i].problem.rating<1700 && user.result[i].verdict === "OK") {
+                        problems[9].y = problems[9].y + 1; 
+                    } else if (user.result[i].problem.rating >=1700 && user.result[i].problem.rating<1800 && user.result[i].verdict === "OK") {
+                        problems[10].y = problems[10].y + 1; 
+                    } else if (user.result[i].problem.rating >=1800 && user.result[i].problem.rating<1900 && user.result[i].verdict === "OK") {
+                        problems[11].y = problems[11].y + 1; 
+                    } else if (user.result[i].problem.rating >=1900 && user.result[i].problem.rating<2000 && user.result[i].verdict === "OK") {
+                        problems[12].y = problems[12].y + 1;  
+                    } else if (user.result[i].problem.rating >=2000 && user.result[i].problem.rating<2100 && user.result[i].verdict === "OK") {
+                        problems[13].y = problems[13].y + 1; 
+                    }
  
-                problemSet.add(user.result[i].problem.name); 
+
+                    if (user.result[i].verdict === "OK") {
+                        problemsSolved += 1;
+                        //let pos_arr = getLanguage(user.result[i].problem.index) ;
+                        //arr[pos_arr].y = arr[pos_arr].y + 1; 
+                    }
+                    problemSet.add(user.result[i].problem.name); 
+                }
+            
+                
+                problemsTried = problemSet.size;
+                res.render("userGraphicalInfo",{
+                    problems : problems,
+                    verdict : verdict,
+                    language : language,
+                    //problemTypes : arr,
+                    problemsTried : problemsTried,
+                    problemsSolved : problemsSolved,
+                    numberOfContests : numberOfContests,
+                    bestRank : bestRank,
+                    worstRank : worstRank,
+                    maxRatingUp : maxRatingUp,
+                    maxRatingDown : maxRatingDown
+                }); 
             }
-            problemsTried = problemSet.size;
-            res.render("userGraphicalInfo",{
-                problems : problems,
-                verdict : verdict,
-                language : language,
-                problemTypes : problemTypes,
-                problemsTried : problemsTried,
-                problemsSolved : problemsSolved,
-                numberOfContests : numberOfContests,
-                bestRank : bestRank,
-                worstRank : worstRank,
-                maxRatingUp : maxRatingUp,
-                maxRatingDown : maxRatingDown
-            }); 
         })
     });
 
