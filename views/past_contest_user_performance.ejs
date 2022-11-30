@@ -139,6 +139,7 @@
           <th></th>
          <%}%> 
          <th scope="col" style="color:white;">NUMBER OF PROBLEMS SOLVED</th>
+         <th scope="col" style="color:white;">RATING CHANGE</th>
       </tr>
       </thead>
       <tbody>
@@ -148,6 +149,7 @@
         <%for (var i=0;i<problems.length;i++) {%>
           <td style="color:#F06292;"><%=problems[i].name%> (<%=problems[i].index%>)</td>
         <%}%> 
+        <td></td>
         <td></td>
       </tr>
 
@@ -175,7 +177,7 @@
             <%} else {%>
               <td style="color:white;"><%=count%></td>
             <%}%>
-            
+            <td style="color:#EF9A53;"><%=count%></td> 
           <%}%> 
           </tr> 
         <%}%> 

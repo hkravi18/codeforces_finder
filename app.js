@@ -11,7 +11,6 @@ const Chart = require('chart.js');
 const { stringify } = require("querystring");
 //var fileId = mongoose.Types.ObjectId();
 const sha512 = require('js-sha512');
-const Swal = require('sweetalert2');
 
 
 function unixTimestamp () {  
@@ -20,7 +19,7 @@ function unixTimestamp () {
     )
 }
 
-mongoose.connect('mongodb+srv://admin_codeforces:mongomongo@cluster0.dd1zn1z.mongodb.net/users');
+mongoose.connect('mongodb+srv://admin_codeforces:mongomongo@cluster0.dd1zn1z.mongodb.net/usersdb');
 
 const User = mongoose.model('User', { 
     name: String,
@@ -67,7 +66,7 @@ app.route("/info")
     https.get (user_url, function (response) {
         response.on("data" ,function (data) {
             const user = JSON.parse(data);
-            console.log(user);
+            //console.log(user);
             if (user.status === "FAILED")
             {
                 //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
@@ -75,7 +74,7 @@ app.route("/info")
             }
             else if (user.status === "OK")
             {
-                console.log(user);
+                //console.log(user);
                 res.render("info",
                 {usersArr : user}
                 );
@@ -158,7 +157,7 @@ app.route("/myfriends")
     https.get (url, function (response) {
         response.on("data" ,function (data) {
             const user = JSON.parse(data);
-            console.log(user);
+            //console.log(user);
             if (user.status === "FAILED")
             {
                 //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
@@ -224,7 +223,7 @@ app.route("/submission")
         response.on('end', function () {
             const data = Buffer.concat(chunks)
             const user = JSON.parse(data);
-            console.log(user);
+            //console.log(user);
             if (user.status === "FAILED")
             {
                 res.redirect("/failure");
@@ -299,24 +298,31 @@ app.route("/pastContest")
     });
 })
 .post(function (req,res) {
-    const contestId =  req.body.contestId;
+    const ContestId =  req.body.contestId;
     let p = 1;
-    let url = "https://codeforces.com/api/contest.standings?contestId=" + contestId + "&handles=";
+    let url = "https://codeforces.com/api/contest.standings?contestId=" + ContestId + "&handles=";
     let userArray = [];
+
+    let RatingChange = [];
+    let obj = {}; 
+
+
     User.find({},function (err,found) {
         if (!err) {
             if (found) {
                 userArray = found;
-                found.forEach(function (user_contest) {
+                console.log("FOUND");
+                console.log(found);
+                found.forEach(function (ListUsers) {
                     if (p===1) {
-                        url = url + user_contest.name;
+                        url = url + ListUsers.name;
                         p++;
                     } else {
-                        url = url + ";" + user_contest.name;
+                        url = url + ";" + ListUsers.name;
                         p++;
-                    }  
-                })
-                console.log(url);
+                    } 
+                });
+
                 https.get(url, function (response) {
                     const chunks = []
                     response.on('data', function (chunk) {
@@ -327,7 +333,8 @@ app.route("/pastContest")
                         const data = Buffer.concat(chunks)
                         const user = JSON.parse(data);
                         //console.log(newUser);
-                        //console.log(user);
+                        console.log("USER");
+                        console.log(user);
                         
                         if (user.status === "FAILED")
                         {
@@ -335,15 +342,15 @@ app.route("/pastContest")
                         }
                         else if (user.status === "OK")
                         {
-                            console.log("CONTESTS");
+                            //console.log("CONTESTS");
                             const contest = user.result.contest;
-                            console.log(contest);
-                            console.log("PROBLEMS");
+                            //console.log(contest);
+                            //console.log("PROBLEMS");
                             const problems = user.result.problems;
-                            console.log(problems);
-                            console.log("ROWS");
+                            //console.log(problems);
+                            //console.log("ROWS");
                             const rows = user.result.rows;
-                            console.log(rows);
+                            //console.log(rows);
                             console.log("found");
                             res.render("past_contest_user_performance",{
                                 problems : problems,
@@ -371,11 +378,11 @@ app.route("/contest")
     const contestId = req.body.contestId;
     const contestName = req.body.contestName;
     const url = "https://codeforces.com/api/contest.status?contestId=" + contestId + "&handle=" + user_profile;
-    console.log(url);
+    //console.log(url);
     https.get (url, function (response) {
         response.on("data" ,function (data) {
             const user = JSON.parse(data);
-            console.log(user.result);
+            //console.log(user.result);
             if (user.status === "FAILED")
             {
                 //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
@@ -593,7 +600,8 @@ app.route("/userGraphicalInfo")
             else if (user.status === "OK")
             {
             
-                let problemSet = new Set();
+                let problemSetTried = new Set();
+                let problemSetSolved = new Set();
 
                 for (let j=0;j<14;j++) {
                     const text = "["+(800+j*100)+" - " + (900+j*100) + "]";
@@ -690,15 +698,17 @@ app.route("/userGraphicalInfo")
  
 
                     if (user.result[i].verdict === "OK") {
-                        problemsSolved += 1;
+                        problemSetSolved.add(user.result[i].problem.name); 
                         //let pos_arr = getLanguage(user.result[i].problem.index) ;
                         //arr[pos_arr].y = arr[pos_arr].y + 1; 
                     }
-                    problemSet.add(user.result[i].problem.name); 
+                    problemSetTried.add(user.result[i].problem.name); 
+                    
                 }
             
                 
-                problemsTried = problemSet.size;
+                problemsTried = problemSetTried.size;
+                problemsSolved = problemSetSolved.size;
                 res.render("userGraphicalInfo",{
                     problems : problems,
                     verdict : verdict,
@@ -738,7 +748,7 @@ app.route("/add")
     https.get (user_url, function (response) {
         response.on("data" ,function (data) {
             const user = JSON.parse(data);
-            console.log(user);
+            //console.log(user);
             if (user.status === "FAILED")
             {
                 //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
@@ -752,21 +762,24 @@ app.route("/add")
                      rating : user.result[0].rating, 
                      rank : user.result[0].rank}
                 );
-                User.deleteMany(
+                User.findOne(
                     {name : data},
-                    function (err) {
+                    function (err,found) {
                         if (!err) {
-                            console.log("delete duplicate");
+                            if (found) {
+                                res.sendFile(__dirname + "/duplicate.html");  
+                            } else {
+                                user_info.save();
+                                res.redirect("/");
+                            }
                         } else {
                             res.redirect("/error");
                         }
                     }
                 )
-                user_info.save();
-                console.log("////////////");
-                console.log(user_info);
-                console.log("Inserted");
-                res.redirect("/");
+                //console.log("////////////");
+                //console.log(user_info);
+                //console.log("Inserted");
             } 
         })
     });
@@ -785,7 +798,7 @@ app.route("/remove")
 })
 .post(function (req,res) {
     const userName = req.body.removeUser;
-    console.log(userName);
+    //console.log(userName);
     User.findOne(
         {name : userName},
         function (err,found){
@@ -820,7 +833,16 @@ app.route("/showList")
     User.find({},function (err,found) {
         if (!err) {
             if (found) {
-                console.log(found);
+                for (var i=0;i<found.length;i++) {
+                    for (var j=i;j<found.length;j++) {
+                        if (found[i].rating < found[j].rating)
+                        {
+                            [found[i] , found[j]] = [found[j] , found[i]]
+                        }  
+                    }
+                }
+                //console.log("SHOW LISTS");
+                //console.log(found);
                 res.render("Users",
                 {users_list : found}
                 );
@@ -938,7 +960,12 @@ app.route("/error")
     res.sendFile(__dirname + "/error.html"); 
 });
 
-
+//GUIDE
+app.get("/guide",
+    function (req,res) {
+        res.sendFile(__dirname + "/guide.html"); 
+    }
+);
 
 //FEATURES
 app.get("/features",

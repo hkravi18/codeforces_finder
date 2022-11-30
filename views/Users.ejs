@@ -116,17 +116,57 @@
   <div class="container">
 
     <center><h1 style="bottom-margin : 60px">Codeforces Users List</h1></center>
-    <div class="row mb-3 text-center div-first">
-      <div class="col-4 themed-grid-col user"><strong>USER</strong></div>
-      <div class="col-4 themed-grid-col user"><strong>RATING</strong></div>
-      <div class="col-4 themed-grid-col user"><strong>RANK</strong></div>
+    <div class="row mb-3 text-center div-first" style="margin-top : 20px;">
+      <div class="col-4 themed-grid-col user" style="color:aliceblue;"><h2>USER</h2></div>
+      <div class="col-4 themed-grid-col user" style="color:aliceblue;"><h2>RATING</h2></div>
+      <div class="col-4 themed-grid-col user" style="color:aliceblue;"><h2>RANK</h2></div>
     </div>
+
     <%for (var i=0;i<users_list.length;i++) {%>
     <div class="row mb-3 text-center">
-      <div class="col-4 themed-grid-col user"><%=users_list[i].name%></div>
-      <div class="col-4 themed-grid-col user"><%=users_list[i].rating%></div>
-      <div class="col-4 themed-grid-col user"><%=users_list[i].rank%></div>
+      <%if (users_list[i].rank === "newbie") {%>
+        <div class="col-4 themed-grid-col user" style="color:grey"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:grey"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:grey"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "pupil") {%>
+        <div class="col-4 themed-grid-col user" style="color:green"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:green"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:green"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "specialist") {%>
+        <div class="col-4 themed-grid-col user" style="color:cyan"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:cyan"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:cyan"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "expert") {%>
+        <div class="col-4 themed-grid-col user" style="color:#7978FF"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#7978FF"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#7978FF"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "candidate master") {%>
+        <div class="col-4 themed-grid-col user" style="color:violet"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:violet"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:violet"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "master") {%>
+        <div class="col-4 themed-grid-col user" style="color:orange"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:orange"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:orange"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "international master") {%>
+        <div class="col-4 themed-grid-col user" style="color:#FD841F"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#FD841F"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#FD841F"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "grandmaster") {%>
+        <div class="col-4 themed-grid-col user" style="color:#FF6464"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#FF6464"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#FF6464"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "international grandmaster") {%>
+        <div class="col-4 themed-grid-col user" style="color:#E64848"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#E64848"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#E64848"><h4><%=users_list[i].rank%></h4></div>
+      <%} else if (users_list[i].rank === "legendary grandmaster") {%>
+        <div class="col-4 themed-grid-col user" style="color:#D2001A"><h4><%=users_list[i].name%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#D2001A"><h4><%=users_list[i].rating%></h4></div>
+        <div class="col-4 themed-grid-col user" style="color:#D2001A"><h4><%=users_list[i].rank%></h4></div>
+      <%}%>   
     </div>
+    <hr>
     <%}%>
 </main>
 
