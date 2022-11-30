@@ -88,6 +88,22 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+      img {
+        max-width: 100%
+      }
+      .image {
+        flex-basis: 40%
+      }
+      .text {
+        font-size: 20px;
+        padding-left: 20px;
+      }
     </style>
 
     
@@ -107,37 +123,116 @@
   <main>
     <h1>Guide!</h1>
     <h1>How to use with Codeforces Finder</h1>
-    <h3 class="fs-5 col-md-8">Currently, there 10 different options avaliable to use  
-    </h3>
-    <h4>Add User</h4><p class="fs-5 col-md-8">Add users to the User list.</p>
-    <h4>Remove User</h4><p class="fs-5 col-md-8">Remove user from the User list.</p>
-    <h4>Show Users List</h4><p class="fs-5 col-md-8">Show users in User list.</p>
-    <h4>Show Users List</h4><p class="fs-5 col-md-8">Show users in User list.</p>
+    <h2 class="fs-5 col-md-8">Currently, there 10 different options avaliable to use  
+    </h2>
+    <h2 class="fs-5 col-md-8">These can fetch information about Users and give various graphical statistics about the data.
+    </h2>
+    
+    <hr class="col-3 col-md-2 mb-5">
+
+    <hr color="white">
+    <h2 class="fs-5 col-md-8">FEATURES:
+    <hr color="white">
+    </h2>
+    <div style="display:block;">
+      <img src="images/AddUsers.png" alt="AddUsers_img" style="border:1px solid black;  height: 300px; margin-right : 40px;"> 
+      <h2 style="display:inline;">Add users to the User list.</h2>
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Remove users from the User list.</h2>
+      <img src="images/RemoveUsers.png" alt="RemoveUsers_img" style="border:1px solid black;  height: 300px; margin-left : 40px;"> 
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <img src="images/ShowList.png" alt="ShowUsersList_img" style="border:1px solid black;  height: 300px; margin-right : 40px;"> 
+      <h2 style="display:inline;">Show User list.</h2>
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Remove All users.</h2>
+      <img src="images/removeAll.png" alt="RemoveAll_img" style="border:1px solid black;  height: 300px; margin-left : 40px;"> 
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <img src="images/graph.png" alt="ShowGraph_img" style="border:1px solid black;  height: 300px; margin-right : 40px;"> 
+      <h2 style="display:inline;">Show Graph</h2>
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Remove All users.</h2>
+      <img src="images/removeAll.png" alt="RemoveAll_img" style="border:1px solid black;  height: 300px; margin-left : 40px;"> 
+    </div>
+    <hr color="white">
+  
+    <div style="display:block;">
+      <img src="images/myfriends.png" alt="ShowMyFriends_img" style="border:1px solid black;  height: 300px; margin-right : 40px;"> 
+      <h2 style="display:inline;">Show Friends</h2>
+    </div>
+    <div>(still working on it ...)</div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Show Rating Change</h2>
+      <img src="images/showRatingChange.png" alt="showRatingChange_img" style="border:1px solid black;  height: 300px; margin-left : 40px;"> 
+    </div>
+    <hr color="white"> 
+  
+    <div style="display:block;">
+      <img src="images/submissions.png" alt="submissions_img" style="border:1px solid black;  height: 300px; margin-right : 40px; width: 500px;"> 
+      <h2 style="display:inline;">Show User Submissions.</h2>
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Show User Info.</h2>
+      <img src="images/info.png" alt="info_img" style="border:1px solid black;  height: 300px; margin-left : 40px;"> 
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <img src="images/userStats1.png" alt="showUserStats_first_img" style="border:1px solid black;  height: 300px; margin-right : 10px; width:450px; margin-bottom:40px;"> 
+      <img src="images/userStats2.png" alt="showUserStats_second_img" style="border:1px solid black;  height: 300px; margin-right : 10px; width:450px; margin-bottom:40px;"> 
+      <center><h2 style="display:inline">Show Users Stats</h2></center>
+    </div>
+    <hr color="white">
+
+    <div style="display:block;">
+      <h2 style="display:inline;">Show Upcoming Contests</h2>
+      <img src="images/upcomingContest.png" alt="upcomingContest_img" style="border:1px solid black;  height: 300px; margin-left : 40px; width:500px;"> 
+    </div>
+    <hr color="white">
+    
+    <div style="display:block;">
+      <img src="images/pastContest.png" alt="pastContest_first_img" style="border:1px solid black;  height: 300px; margin-right :10px; width: 450px; margin-bottom:40px;"> 
+      <img src="images/pastContests2.png" alt="pastContest_second_img" style="border:1px solid black;  height: 300px; margin-right :0px; width: 450px; margin-bottom:40px;">
+      <h2 style="display:inline;">Show Past Contests and Users (from Users List) Performance.</h2>
+    </div>
+    <hr color="white">
+
     <div class="mb-5">
       <form action="/" method="GET">
       <button class="btn btn-outline-primary btn-lg px-4 ">GET STARTED</button>
     </form>
     </div>
 
-    <hr class="col-3 col-md-2 mb-5">
 
-    <div class="row g-5">
-      <div class="col-md-6">
-        <h2>This project is currently in progress.</h2>
-        <p>More features are coming soon.</p>
-      </div>
-    </div>
-    
-    <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
   </main>
-  <footer class="pt-5 my-5 text-muted border-top">
+  <div class="row g-5" style="margin-top:40px;">
+    <div class="col-md-6">
+      <h2>This project is currently in progress.</h2>
+      <h2>Hope you find it helpful.</h2>
+      <p>More features are coming soon.</p>
+    </div>
+  </div>
+
+
+  <footer class="pt-5 my-5 text-muted border-top" style="margin-top:400px;">
     Created by the Ravi
   </footer>
 </div>
