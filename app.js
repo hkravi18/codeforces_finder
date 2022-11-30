@@ -149,26 +149,34 @@ app.route("/failure")
 //MYFRIENDS
 app.route("/myfriends")
 .get(function(req,res) {
-    let time_unix = unixTimestamp();
-    const rand = "123456";
-    let ToHash = rand + "/user.friends?apiKey=4c3309c52da9fb394ad07de71b0c970a0b7b879a&time="+time_unix+"#4e671ca7d9585832c3ac28a2d1256bfc9ab7fe90"
-    const hash = sha512(ToHash);
-    let url ="https://codeforces.com/api/user.friends?&apiKey=4c3309c52da9fb394ad07de71b0c970a0b7b879a&time="+time_unix+"&apiSig="+rand+hash;
-    https.get (url, function (response) {
-        response.on("data" ,function (data) {
-            const user = JSON.parse(data);
-            //console.log(user);
-            if (user.status === "FAILED")
-            {
-                //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
-                res.redirect("/failure");
-            }
-            else if (user.status === "OK")
-            {
-                res.render("myFriends", {Array : user.result});  
-            } 
-        })
-    });
+    res.render("secretCode", {key : 1});
+})
+.post(function(req,res) {
+    const secretKey = req.body.secretKey;
+    if (secretKey === "keyFriends") {
+        let time_unix = unixTimestamp();
+        const rand = "123456";
+        let ToHash = rand + "/user.friends?apiKey=4c3309c52da9fb394ad07de71b0c970a0b7b879a&time="+time_unix+"#4e671ca7d9585832c3ac28a2d1256bfc9ab7fe90"
+        const hash = sha512(ToHash);
+        let url ="https://codeforces.com/api/user.friends?&apiKey=4c3309c52da9fb394ad07de71b0c970a0b7b879a&time="+time_unix+"&apiSig="+rand+hash;
+        https.get (url, function (response) {
+            response.on("data" ,function (data) {
+                const user = JSON.parse(data);
+                //console.log(user);
+                if (user.status === "FAILED")
+                {
+                    //res.send("<h3>User with handle "+ user_profile +" not found</h3>");
+                    res.redirect("/failure");
+                }
+                else if (user.status === "OK")
+                {
+                    res.render("myFriends", {Array : user.result});  
+                } 
+            })
+        }); 
+    } else {
+        res.render("secretCode", {key : 0});  
+    }
 });  
     
 //RATING CHANGE 
